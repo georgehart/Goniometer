@@ -14,16 +14,25 @@ Description :
               Gemma Frisius, who used it to calculate and record the position of celestial bodies with respect to Earth.
 
 
-URL         : OLED SH1106
-              library u8g2
+URL's        : Goniometry
+                    * https://curovate.com/blog/what-is-range-of-motion-and-why-is-it-important-following-knee-replacement/
+                    
+               MKR1010
+                    * https://docs.arduino.cc/static/fc77c3c3c77d69764ba7773df64c99db/ABX00023-datasheet.pdf
+                    
+               MPU6050
+                    * https://invensense.tdk.com/wp-content/uploads/2015/02/MPU-6000-Datasheet1.pdf
+               
+              sd1306/SH1106
+                    * 
+               library u8g2
+                    * https://nodemcu.readthedocs.io/en/release/modules/u8g2/#:~:text=U8g2%20is%20a%20graphics%20library,is%20not%20developed%20any%20further.
+                    
               
+Firmware    : 0.2 (ffirst trials with MKR1010, OLED and MPU )
 
+Versioning  : GIT
 
-Firmware    : 
-
-
-
-  
 
  **************************************************************************/
 
@@ -33,7 +42,7 @@ Firmware    :
 
 #include <U8g2lib.h>
 
-
+// ----- FLASH RAM memory -----
 #define knee_width 64
 #define knee_height 59
 static unsigned char knee[] = {
@@ -169,13 +178,15 @@ static unsigned char heldb[] = {
 
 
 const float RAD2DEG = 180.0f / PI;
-double x_accel;     // -----------------------
-double y_accel;     //  variabelen MPU6050
-double head;        // -----------------------
+double x_accel;     
+double y_accel;     
+double head;        
 
 
+// ----- Declaration Object variables -----
 U8G2_SH1106_128X64_NONAME_F_HW_I2C oled(U8G2_R0, /* reset=*/ U8X8_PIN_NONE);
 Adafruit_MPU6050 mpu;
+
 
 void setup(void) {
   Serial.begin(115200);
@@ -204,7 +215,6 @@ void setup(void) {
 
 void loop() {
 
-  /* Get new sensor events with the readings */
   sensors_event_t a, g, temp;
   mpu.getEvent(&a, &g, &temp);
 
@@ -215,6 +225,9 @@ void loop() {
   delay(10);
 }
 
+
+
+// ----- Functions -----
 
 void measure(float a){
     
